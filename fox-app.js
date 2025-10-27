@@ -228,7 +228,7 @@ export class FoxApp extends DDDSuper(I18NMixin(LitElement)) {
           <button @click="${this.handleLike}" title="Like" aria-label="like">
             Heart <span class="likes-count">${this.likes}</span>
           </button>
-          <button @click="${this.handleShare}" title="Share" aria-label="share">🔗</button>
+          <button @click="${this.handleShare}" title="Share" aria-label="share">Share</button>
         </div>
       </div>
     `;
