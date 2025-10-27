@@ -8,7 +8,6 @@ import { I18NMixin } from "@haxtheweb/i18n-manager/lib/I18NMixin.js";
 
 /**
  * `fox-app`
- *
  */
 export class FoxApp extends DDDSuper(I18NMixin(LitElement)) {
   static get tag() {
@@ -227,7 +226,7 @@ export class FoxApp extends DDDSuper(I18NMixin(LitElement)) {
 
         <div class="actions">
           <button @click="${this.handleLike}" title="Like" aria-label="like">
-            ❤️ <span class="likes-count">${this.likes}</span>
+            Heart <span class="likes-count">${this.likes}</span>
           </button>
           <button @click="${this.handleShare}" title="Share" aria-label="share">🔗</button>
         </div>
