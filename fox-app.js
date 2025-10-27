@@ -8,7 +8,7 @@ import { I18NMixin } from "@haxtheweb/i18n-manager/lib/I18NMixin.js";
 
 /**
  * `fox-app`
- * DDD-styled Instagram-like fox photo card
+ *
  */
 export class FoxApp extends DDDSuper(I18NMixin(LitElement)) {
   static get tag() {
