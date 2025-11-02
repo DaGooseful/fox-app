@@ -1,0 +1,75 @@
+{
+  "gallery": [
+    {
+      "id": 1,
+      "username": "TheNinetales",
+      "image": "https://randomfox.ca/images/1.jpg",
+      "likes": 12,
+      "shareLink": "https://randomfox.ca/?i=1"
+    },
+    {
+      "id": 2,
+      "username": "Fox Lover 9000",
+      "image": "https://randomfox.ca/images/2.jpg",
+      "likes": 8,
+      "shareLink": "https://randomfox.ca/?i=2"
+    },
+    {
+      "id": 3,
+      "username": "67",
+      "image": "https://randomfox.ca/images/3.jpg",
+      "likes": 15,
+      "shareLink": "https://randomfox.ca/?i=3"
+    },
+    {
+      "id": 4,
+      "username": "I Love Big Foxes",
+      "image": "https://randomfox.ca/images/4.jpg",
+      "likes": 5,
+      "shareLink": "https://randomfox.ca/?i=4"
+    },
+    {
+      "id": 5,
+      "username": "Mr.StealYourFox",
+      "image": "https://randomfox.ca/images/5.jpg",
+      "likes": 22,
+      "shareLink": "https://randomfox.ca/?i=5"
+    },
+    {
+      "id": 6,
+      "username": "Foxy from FNAF",
+      "image": "https://randomfox.ca/images/6.jpg",
+      "likes": 10,
+      "shareLink": "https://randomfox.ca/?i=6"
+    },
+    {
+      "id": 7,
+      "username": "Firefox",
+      "image": "https://randomfox.ca/images/7.jpg",
+      "likes": 9,
+      "shareLink": "https://randomfox.ca/?i=7"
+    },
+    {
+      "id": 8,
+      "username": "TailsOfTheNine",
+      "image": "https://randomfox.ca/images/8.jpg",
+      "likes": 17,
+      "shareLink": "https://randomfox.ca/?i=8"
+    },
+    {
+      "id": 9,
+      "username": "IHateCS",
+      "image": "https://randomfox.ca/images/9.jpg",
+      "likes": 4,
+      "shareLink": "https://randomfox.ca/?i=9"
+    },
+    {
+      "id": 10,
+      "username": "JAVA LOVER",
+      "image": "https://randomfox.ca/images/10.jpg",
+      "likes": 25,
+      "shareLink": "https://randomfox.ca/?i=10"
+    }
+  ]
+}
+

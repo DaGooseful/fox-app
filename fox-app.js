@@ -5,11 +5,13 @@
 import { LitElement, html, css } from "lit";
 import { DDDSuper } from "@haxtheweb/d-d-d/d-d-d.js";
 import { I18NMixin } from "@haxtheweb/i18n-manager/lib/I18NMixin.js";
+import "@haxtheweb/simple-icon/lib/simple-icon-lite.js"; //This i have chatgpt give me suggestion on emote
+import "@haxtheweb/simple-icon/lib/simple-icons.js"; //They sad this would work
 
 /**
  * `fox-app`
  */
-export class FoxApp extends DDDSuper(I18NMixin(LitElement)) {
+export class FoxApp extends DDDSuper(I18NMixin(LitElement)) { //Class header
   static get tag() {
     return "fox-app";
   }
@@ -17,81 +19,82 @@ export class FoxApp extends DDDSuper(I18NMixin(LitElement)) {
   static get properties() {
     return {
       ...super.properties,
-      imageUrl: { type: String },
-      likes: { type: Number },
+      gallery: { type: Array },
+      likes: { type: Object },
     };
   }
 
   constructor() {
     super();
-    this.imageUrl = "";
-    this.likes = 0;
+    this.gallery = [];
+    this.likes = {};
   }
 
   connectedCallback() {
     super.connectedCallback();
-    this.getFoxImage();
+    this.loadGallery();
     this.loadLikes();
   }
 
-  async getFoxImage() {
+  async loadGallery() { //Spended a lot of time on this, thankfully with the help of chatgpt error checking it work
     try {
-      const res = await fetch("https://randomfox.ca/floof/");
+      const res = await fetch(
+        new URL("./NewAssetsIThink/fox-picGalley.json", import.meta.url)
+      );
       const data = await res.json();
-      this.imageUrl = data.image;
+      this.gallery = data.gallery;
     } catch (err) {
-      console.error("Error fetching fox:", err);
+      console.error("Error loading gallery:", err);
     }
   }
 
-  loadLikes() {
-    const savedLikes = localStorage.getItem("foxLikes");
-    if (savedLikes) {
-      this.likes = parseInt(savedLikes, 10);
+  loadLikes() { //Our storage that load the likes
+    const saved = localStorage.getItem("foxGalleryLikes");
+    if (saved) {
+      this.likes = JSON.parse(saved);
     }
   }
 
-  saveLikes() {
-    localStorage.setItem("foxLikes", this.likes);
+  saveLikes() { //Thius save our likes
+    localStorage.setItem("foxGalleryLikes", JSON.stringify(this.likes));
   }
 
-  handleLike() {
-    this.likes++;
+  handleLike(id) { //This increase likes
+    this.likes[id] = (this.likes[id] || 0) + 1;
     this.saveLikes();
     this.requestUpdate();
   }
 
-  async handleShare() {
+  async handleShare(url) {
     if (navigator.share) {
       try {
-        await navigator.share({
-          title: "Check out this fox!",
-          text: "Look at this random fox 🦊",
-          url: this.imageUrl,
+        await navigator.share({ //Our text when we share
+          text: "Look at this fox I found working on this project",
+          url,
         });
-      } catch (err) {
+      } catch (err) { //IST 242 came in clutch here
         console.warn("Share canceled or failed:", err);
       }
     } else {
-      navigator.clipboard.writeText(this.imageUrl);
-      alert("Fox image link copied to clipboard!");
+      await navigator.clipboard.writeText(url);
+      alert("Link copied to clipboard!");
     }
   }
 
-  static get styles() {
+  static get styles() { //Our styles
     return [
       super.styles,
       css`
         :host {
           display: flex;
+          flex-wrap: wrap;
           justify-content: center;
-          align-items: flex-start;
+          gap: var(--ddd-spacing-4, 16px);
           background-color: var(--ddd-theme-background, #f9f9f9);
-          min-height: 100vh;
-          font-family: var(--ddd-font-navigation, "Helvetica Neue", Arial, sans-serif);
-          color: var(--ddd-theme-primary, #000);
           padding: var(--ddd-spacing-4, 16px);
           box-sizing: border-box;
+          color: var(--ddd-theme-primary, #000);
+          font-family: var(--ddd-font-navigation);
         }
 
         .card {
@@ -103,42 +106,34 @@ export class FoxApp extends DDDSuper(I18NMixin(LitElement)) {
           overflow: hidden;
           display: flex;
           flex-direction: column;
-          transition: var(--ddd-transition, all 0.2s ease-in-out);
+          transition: transform 0.2s ease-in-out;
+        }
+
+        .card:hover {
+          transform: scale(1.01);
         }
 
         .header {
           display: flex;
           align-items: center;
-          padding: var(--ddd-spacing-2, 10px) var(--ddd-spacing-3, 12px);
+          padding: var(--ddd-spacing-3, 12px);
           border-bottom: 1px solid var(--ddd-border-color, #e0e0e0);
-          justify-content: flex-start;
-          flex-shrink: 0;
         }
 
         .profile-pic {
           width: var(--ddd-size-xl, 48px);
           height: var(--ddd-size-xl, 48px);
-          border-radius: var(--ddd-radius-full, 50%);
+          border-radius: 50%;
           background-image: url("https://assets.pokemon.com/assets/cms2/img/pokedex/full/038.png");
           background-size: cover;
           background-position: center;
-          margin-right: var(--ddd-spacing-2, 10px);
-          flex-shrink: 0;
+          margin-right: var(--ddd-spacing-2, 8px);
         }
 
         .username {
           font-weight: var(--ddd-font-weight-bold, 700);
-          font-size: var(--ddd-font-size-xl, 20px);
+          font-size: var(--ddd-font-size-l, 18px);
           color: var(--ddd-theme-primary, #000);
-          line-height: 1.2;
-          letter-spacing: var(--ddd-letter-spacing-tight, 0);
-        }
-
-        .image-container {
-          width: 100%;
-          display: flex;
-          justify-content: center;
-          background-color: var(--ddd-theme-surface, #fff);
         }
 
         .image-container img {
@@ -155,86 +150,75 @@ export class FoxApp extends DDDSuper(I18NMixin(LitElement)) {
           gap: var(--ddd-spacing-4, 20px);
           padding: var(--ddd-spacing-3, 12px);
           border-top: 1px solid var(--ddd-border-color, #e0e0e0);
-          flex-shrink: 0;
         }
 
-        .actions button {
+        button {
           background: none;
           border: none;
           cursor: pointer;
-          font-size: var(--ddd-font-size-l, 22px);
           display: flex;
           align-items: center;
           gap: var(--ddd-spacing-1, 6px);
           color: var(--ddd-theme-primary, #000);
-          transition: var(--ddd-transition-transform, transform 0.18s ease);
+          transition: transform 0.18s ease;
+          font-size: var(--ddd-font-size-m, 16px);
         }
 
-        .actions button:active {
-          transform: scale(1.12);
+        button:active {
+          transform: scale(1.1);
+        }
+
+        simple-icon-lite {
+          --simple-icon-width: 24px;
+          --simple-icon-height: 24px;
+          color: var(--ddd-theme-primary, #000);
         }
 
         .likes-count {
           font-size: var(--ddd-font-size-s, 14px);
         }
 
-        /* 📱 Mobile responsiveness */
         @media (max-width: 600px) {
-          :host {
-            padding: var(--ddd-spacing-2, 10px);
-          }
-
           .card {
             max-width: 95%;
-            border-radius: var(--ddd-radius-md, 10px);
-          }
-
-          .profile-pic {
-            width: var(--ddd-size-l, 40px);
-            height: var(--ddd-size-l, 40px);
-          }
-
-          .username {
-            font-size: var(--ddd-font-size-l, 18px);
-          }
-
-          .actions {
-            gap: var(--ddd-spacing-3, 16px);
-          }
-
-          .actions button {
-            font-size: var(--ddd-font-size-l, 20px);
           }
         }
       `,
     ];
   }
 
-  render() {
+  render() { //Our render, for some reason only social:share work, too lazy to figure it out
+    // I had chatgpt fix the format for me, cause it is mad ugly with all the line in a mess.
     return html`
-      <div class="card">
-        <div class="header">
-          <div class="profile-pic" role="img" aria-label="profile"></div>
-          <div class="username">TheNinetales</div>
-        </div>
+      ${this.gallery.map(
+        (item) => html`
+          <div class="card">
+            <div class="header">
+              <div class="profile-pic"></div>
+              <div class="username">${item.username}</div>
+            </div>
 
-        <div class="image-container">
-          ${this.imageUrl
-            ? html`<img src="${this.imageUrl}" alt="Random Fox" />`
-            : html`<p>Loading...</p>`}
-        </div>
+            <div class="image-container">
+              <img src="${item.image}" alt="Fox by ${item.username}" />
+            </div>
 
-        <div class="actions">
-          <button @click="${this.handleLike}" title="Like" aria-label="like">
-            Heart <span class="likes-count">${this.likes}</span>
-          </button>
-          <button @click="${this.handleShare}" title="Share" aria-label="share">Share</button>
-        </div>
-      </div>
+            <div class="actions">
+              <button @click="${() => this.handleLike(item.id)}" title="Like">
+                <simple-icon-lite icon="favorite"></simple-icon-lite>
+                <span class="likes-count">${this.likes[item.id] || item.likes || 0}</span>
+              </button>
+              <button @click="${() => this.handleShare(item.shareLink)}" title="Share">
+                <simple-icon-lite icon="social:share"></simple-icon-lite> 
+              </button>
+            </div>
+          </div>
+        `
+      )}
     `;
   }
 }
 
 globalThis.customElements.define(FoxApp.tag, FoxApp);
 
-//Testing
+//This too way too much unnecessary time, im dead inside.
+//Still working on it, a lot of stuff to improve.
