@@ -5,13 +5,13 @@
 import { LitElement, html, css } from "lit";
 import { DDDSuper } from "@haxtheweb/d-d-d/d-d-d.js";
 import { I18NMixin } from "@haxtheweb/i18n-manager/lib/I18NMixin.js";
-import "@haxtheweb/simple-icon/lib/simple-icon-lite.js"; //This i have chatgpt give me suggestion on emote
-import "@haxtheweb/simple-icon/lib/simple-icons.js"; //They sad this would work
+import "@haxtheweb/simple-icon/lib/simple-icon-lite.js"; 
+import "@haxtheweb/simple-icon/lib/simple-icons.js";
 
 /**
  * `fox-app`
  */
-export class FoxApp extends DDDSuper(I18NMixin(LitElement)) { //Class header
+export class FoxApp extends DDDSuper(I18NMixin(LitElement)) {
   static get tag() {
     return "fox-app";
   }
@@ -28,6 +28,20 @@ export class FoxApp extends DDDSuper(I18NMixin(LitElement)) { //Class header
     super();
     this.gallery = [];
     this.likes = {};
+
+    //Spend way too much time for it to not work, so i have chatgpt add lazy loading for me
+    this.imageObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const img = entry.target;
+            img.src = img.dataset.src;
+            this.imageObserver.unobserve(img);
+          }
+        });
+      },
+      { rootMargin: "200px 0px" }
+    );
   }
 
   connectedCallback() {
@@ -35,8 +49,9 @@ export class FoxApp extends DDDSuper(I18NMixin(LitElement)) { //Class header
     this.loadGallery();
     this.loadLikes();
   }
-
-  async loadGallery() { //Spended a lot of time on this, thankfully with the help of chatgpt error checking it work
+//I spend 3 hour on this just to realize it is call fox-picGalley.json instead of fox-picGallery.json
+//Needless to say I hate myself but it is funny so i keep galley.
+  async loadGallery() {
     try {
       const res = await fetch(
         new URL("./NewAssetsIThink/fox-picGalley.json", import.meta.url)
@@ -47,19 +62,19 @@ export class FoxApp extends DDDSuper(I18NMixin(LitElement)) { //Class header
       console.error("Error loading gallery:", err);
     }
   }
-
-  loadLikes() { //Our storage that load the likes
+//Our like system like last verison
+  loadLikes() {
     const saved = localStorage.getItem("foxGalleryLikes");
     if (saved) {
       this.likes = JSON.parse(saved);
     }
   }
 
-  saveLikes() { //Thius save our likes
+  saveLikes() {
     localStorage.setItem("foxGalleryLikes", JSON.stringify(this.likes));
   }
 
-  handleLike(id) { //This increase likes
+  handleLike(id) {
     this.likes[id] = (this.likes[id] || 0) + 1;
     this.saveLikes();
     this.requestUpdate();
@@ -68,11 +83,11 @@ export class FoxApp extends DDDSuper(I18NMixin(LitElement)) { //Class header
   async handleShare(url) {
     if (navigator.share) {
       try {
-        await navigator.share({ //Our text when we share
+        await navigator.share({
           text: "Look at this fox I found working on this project",
           url,
         });
-      } catch (err) { //IST 242 came in clutch here
+      } catch (err) {
         console.warn("Share canceled or failed:", err);
       }
     } else {
@@ -80,8 +95,8 @@ export class FoxApp extends DDDSuper(I18NMixin(LitElement)) { //Class header
       alert("Link copied to clipboard!");
     }
   }
-
-  static get styles() { //Our styles
+//Smaller card design
+  static get styles() {
     return [
       super.styles,
       css`
@@ -99,7 +114,7 @@ export class FoxApp extends DDDSuper(I18NMixin(LitElement)) { //Class header
 
         .card {
           width: 100%;
-          max-width: 400px;
+          max-width: 280px;
           background-color: var(--ddd-theme-surface, #fff);
           border-radius: var(--ddd-radius-lg, 12px);
           box-shadow: var(--ddd-box-shadow-md, 0 2px 8px rgba(0, 0, 0, 0.1));
@@ -124,23 +139,36 @@ export class FoxApp extends DDDSuper(I18NMixin(LitElement)) { //Class header
           width: var(--ddd-size-xl, 48px);
           height: var(--ddd-size-xl, 48px);
           border-radius: 50%;
-          background-image: url("https://assets.pokemon.com/assets/cms2/img/pokedex/full/038.png");
-          background-size: cover;
-          background-position: center;
+          overflow: hidden;
           margin-right: var(--ddd-spacing-2, 8px);
+          flex-shrink: 0;
         }
 
+        .profile-pic img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          display: block;
+        }
+//Small name
         .username {
           font-weight: var(--ddd-font-weight-bold, 700);
-          font-size: var(--ddd-font-size-l, 18px);
+          font-size: var(--ddd-font-size-m, 14px);
           color: var(--ddd-theme-primary, #000);
+        }
+
+        .image-container {
+          width: 100%;
+          height: 220px;
+          overflow: hidden;
+          background: #eee;
         }
 
         .image-container img {
           width: 100%;
-          height: auto;
+          height: 100%;
+          object-fit: cover;
           display: block;
-          object-fit: contain;
         }
 
         .actions {
@@ -180,35 +208,49 @@ export class FoxApp extends DDDSuper(I18NMixin(LitElement)) { //Class header
 
         @media (max-width: 600px) {
           .card {
-            max-width: 95%;
+            max-width: 46%;
           }
         }
       `,
     ];
   }
-
-  render() { //Our render, for some reason only social:share work, too lazy to figure it out
-    // I had chatgpt fix the format for me, cause it is mad ugly with all the line in a mess.
+//More lazzy loading stuff?
+  updated() {
+    const lazyImages = this.renderRoot.querySelectorAll("img[data-src]");
+    lazyImages.forEach((img) => this.imageObserver.observe(img));
+  }
+//Our render
+  render() {
     return html`
       ${this.gallery.map(
         (item) => html`
           <div class="card">
             <div class="header">
-              <div class="profile-pic"></div>
+              <div class="profile-pic">
+                <img src="${item.profilePic}" alt="${item.username} profile picture">
+              </div>
+
               <div class="username">${item.username}</div>
             </div>
 
             <div class="image-container">
-              <img src="${item.image}" alt="Fox by ${item.username}" />
+              <img 
+                data-src="${item.image}" 
+                src=""  
+                alt="Fox by ${item.username}" 
+              />
             </div>
 
             <div class="actions">
               <button @click="${() => this.handleLike(item.id)}" title="Like">
                 <simple-icon-lite icon="favorite"></simple-icon-lite>
-                <span class="likes-count">${this.likes[item.id] || item.likes || 0}</span>
+                <span class="likes-count">
+                  ${this.likes[item.id] || item.likes || 0}
+                </span>
               </button>
+
               <button @click="${() => this.handleShare(item.shareLink)}" title="Share">
-                <simple-icon-lite icon="social:share"></simple-icon-lite> 
+                <simple-icon-lite icon="social:share"></simple-icon-lite>
               </button>
             </div>
           </div>
@@ -220,5 +262,12 @@ export class FoxApp extends DDDSuper(I18NMixin(LitElement)) { //Class header
 
 globalThis.customElements.define(FoxApp.tag, FoxApp);
 
-//This too way too much unnecessary time, im dead inside.
-//Still working on it, a lot of stuff to improve.
+
+//Stuff to change
+//1. Smaller card - done
+//2. Picture need to be the same size - done
+//3. The card need to load as it is rolling down - done
+//4.  Aka when you open a website it won't load all the picture at once, which save memory
+// Loading = "lazy", fetchpriority = "low" - done
+//5. No hard coded pokemon, instead put the profile picture into the json files, so each user have unique profile. - done
+// Total usage 5 hours, I understand why Cs major are bald.

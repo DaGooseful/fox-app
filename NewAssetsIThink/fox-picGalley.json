@@ -1,8 +1,11 @@
+
 {
-  "gallery": [
+    "gallery": 
+    [
     {
       "id": 1,
       "username": "TheNinetales",
+      "profilePic": "https://archives.bulbagarden.net/media/upload/thumb/0/06/0037Vulpix.png/375px-0037Vulpix.png",
       "image": "https://randomfox.ca/images/1.jpg",
       "likes": 12,
       "shareLink": "https://randomfox.ca/?i=1"
@@ -10,6 +13,7 @@
     {
       "id": 2,
       "username": "Fox Lover 9000",
+      "profilePic": "https://tse2.mm.bing.net/th/id/OIP.cMwfgm-7lnrT7MRnT5FrugHaJF?cb=ucfimgc2&rs=1&pid=ImgDetMain&o=7&rm=3",
       "image": "https://randomfox.ca/images/2.jpg",
       "likes": 8,
       "shareLink": "https://randomfox.ca/?i=2"
@@ -17,13 +21,15 @@
     {
       "id": 3,
       "username": "67",
+      "profilePic": "https://archives.bulbagarden.net/media/upload/thumb/1/16/0828Thievul.png/375px-0828Thievul.png",
       "image": "https://randomfox.ca/images/3.jpg",
       "likes": 15,
       "shareLink": "https://randomfox.ca/?i=3"
     },
     {
       "id": 4,
-      "username": "I Love Big Foxes",
+      "username": "I Love big foxes",
+      "profilePic": "https://archives.bulbagarden.net/media/upload/thumb/0/01/0655Delphox.png/375px-0655Delphox.png",
       "image": "https://randomfox.ca/images/4.jpg",
       "likes": 5,
       "shareLink": "https://randomfox.ca/?i=4"
@@ -31,6 +37,7 @@
     {
       "id": 5,
       "username": "Mr.StealYourFox",
+      "profilePic": "https://archives.bulbagarden.net/media/upload/thumb/5/52/0571Zoroark.png/375px-0571Zoroark.png",
       "image": "https://randomfox.ca/images/5.jpg",
       "likes": 22,
       "shareLink": "https://randomfox.ca/?i=5"
@@ -38,36 +45,41 @@
     {
       "id": 6,
       "username": "Foxy from FNAF",
+      "profilePic": "https://archives.bulbagarden.net/media/upload/thumb/3/3e/0038Ninetales.png/375px-0038Ninetales.png",
       "image": "https://randomfox.ca/images/6.jpg",
       "likes": 10,
       "shareLink": "https://randomfox.ca/?i=6"
     },
     {
       "id": 7,
-      "username": "Firefox",
+      "username": "Mr.Mime",
+      "profilePic": "https://th.bing.com/th/id/R.1b842eaf6c3be1a1e30a1a33adc9fde7?rik=GbxXDh3oxb8P9A&pid=ImgRaw&r=0",
       "image": "https://randomfox.ca/images/7.jpg",
-      "likes": 9,
+      "likes": 7,
       "shareLink": "https://randomfox.ca/?i=7"
     },
     {
       "id": 8,
-      "username": "TailsOfTheNine",
+      "username": "Man I Love Foxes",
+      "profilePic": "https://archives.bulbagarden.net/media/upload/thumb/3/3a/0039Jigglypuff.png/375px-0039Jigglypuff.png",
       "image": "https://randomfox.ca/images/8.jpg",
-      "likes": 17,
+      "likes": 18,
       "shareLink": "https://randomfox.ca/?i=8"
     },
     {
       "id": 9,
-      "username": "IHateCS",
+      "username": "Rat instead of fox",
+      "profilePic": "https://archives.bulbagarden.net/media/upload/thumb/4/4a/0025Pikachu.png/375px-0025Pikachu.png",
       "image": "https://randomfox.ca/images/9.jpg",
       "likes": 4,
       "shareLink": "https://randomfox.ca/?i=9"
     },
     {
       "id": 10,
-      "username": "JAVA LOVER",
+      "username": "Fat pikachu",
+      "profilePic": "https://archives.bulbagarden.net/media/upload/thumb/8/8c/0025Pikachu-Gigantamax.png/165px-0025Pikachu-Gigantamax.png",
       "image": "https://randomfox.ca/images/10.jpg",
-      "likes": 25,
+      "likes": 20,
       "shareLink": "https://randomfox.ca/?i=10"
     }
   ]
